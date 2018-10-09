@@ -36,11 +36,15 @@ router.post("/register", (req, res) => {
       errors.email = "Email already exists";
       return res.status(400).json(errors);
     } else {
-      const avatar = gravatar.url(req.body.email, {
-        s: "200", // Size
-        r: "pg", // Rating
-        d: "mm" // Default
-      });
+      const avatar = gravatar.url(
+        req.body.email,
+        {
+          s: "200", // Size
+          r: "pg", // Rating
+          d: "mm" // Default
+        },
+        false
+      );
       const newUser = new User({
         name: req.body.name,
         email: req.body.email,
@@ -88,7 +92,11 @@ router.post("/login", (req, res) => {
       if (isMatch) {
         // User Matched
         // Create payload
-        const payload = { id: user.id, name: user.name, avatar: user.avatar };
+        const payload = {
+          id: user.id,
+          name: user.name,
+          avatar: user.avatar
+        };
         // Sign token
         jwt.sign(
           payload,
